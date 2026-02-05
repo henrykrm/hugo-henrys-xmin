@@ -1,9 +1,14 @@
-  <footer>
-  {{ partial "foot_custom.html" . }}
-  {{ with .Site.Params.footer }}
+<footer>
   <hr/>
-  {{ replace . "{Year}" now.Year | markdownify }}
+  {{ .Site.Params.footer | markdownify }}
+
+  {{ if .Site.Menus.footer }}
+  |
+  {{ range $index, $item := .Site.Menus.footer }}
+    {{ if $index }} | {{ end }}
+    <a href="{{ $item.URL }}">{{ $item.Name }}</a>
   {{ end }}
-  </footer>
-  </body>
-</html>
+  {{ end }}
+
+  | <a href="https://github.com/henrykrm">GitHub</a>
+</footer>

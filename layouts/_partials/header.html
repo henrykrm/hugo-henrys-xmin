@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ .Site.LanguageCode }}">
+<html lang="{{ .Site.Language.LanguageCode }}">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,12 +8,25 @@
     <link rel="stylesheet" href="{{ "css/fonts.css" | relURL }}" />
     {{ partial "head_custom.html" . }}
   </head>
-
   <body>
     <nav>
     <ul class="menu">
       {{ range .Site.Menus.main }}
       <li><a href="{{ .URL | relURL }}">{{ .Name }}</a></li>
+      {{ end }}
+
+      <!-- Language Switcher -->
+      {{ if hugo.IsMultilingual }}
+      <li style="float: right;">
+        {{ range .Site.Home.AllTranslations }}
+          {{ if eq .Language.Lang $.Language.Lang }}
+            <strong>{{ .Language.LanguageName }}</strong>
+          {{ else }}
+            <a href="{{ .Permalink }}">{{ .Language.LanguageName }}</a>
+          {{ end }}
+          {{ if ne .Language.Lang (index (last 1 $.Site.Home.AllTranslations) 0).Language.Lang }} | {{ end }}
+        {{ end }}
+      </li>
       {{ end }}
     </ul>
     <hr/>
